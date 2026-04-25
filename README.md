@@ -1,0 +1,1 @@
+This respository is initialized to help me convert between currencies. 
