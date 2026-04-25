@@ -24,9 +24,17 @@
 
             <label for="sell-rate">Sell Rate:</label>
             <input type="float" id="sell-rate" name="sell-rate" required>
+
             <br>    
+
             <label for="ringet-taken">Ringet Taken:</label>
             <input type="float" id="ringet-taken" name="ringet-taken" value="1500">
+
+            <br>
+
+            <label for="manual-cost-in-rufiyaa">Manual Cost in Rufiyaa: (Optional)</label>
+            <input type="float" id="manual-cost-in-rufiyaa" name="manual-cost-in-rufiyaa">
+            
             <br>
             <button type="submit">Convert</button>
         </form>
@@ -37,18 +45,21 @@
         <script>
             document.getElementById('currency-form').addEventListener('submit', function(e) {
                 e.preventDefault();
+                const fixedExchangeRate = 15.42; // (1 USD = 15.42 MVR)
+
 
                 const dollar = parseFloat(document.getElementById('dollar').value);
                 const sellRate = parseFloat(document.getElementById('sell-rate').value);
                 const ringetTaken = parseFloat(document.getElementById('ringet-taken').value);
-                if (isNaN(dollar) || isNaN(sellRate) || isNaN(ringetTaken)) {
+                const manualCostInRufiyaa = parseFloat(document.getElementById('manual-cost-in-rufiyaa').value);
+
+                if (isNaN(dollar) || isNaN(sellRate) || isNaN(ringetTaken) || (document.getElementById('manual-cost-in-rufiyaa').value && isNaN(manualCostInRufiyaa))) {
                     document.getElementById('result').innerText = 'Please enter valid numbers.';
                     return;
                 }
 
-                const fixedExchangeRate = 15.42; // (1 USD = 15.42 MVR)
-               
-                const costInRufiyaa = fixedExchangeRate * dollar;
+              
+                const costInRufiyaa = manualCostInRufiyaa ? manualCostInRufiyaa : fixedExchangeRate * dollar;
                 const dollarReceived = ringetTaken / sellRate;
                 const rufiyaaReceived = dollarReceived * fixedExchangeRate;
                 const rufiyaaDefecit = costInRufiyaa - rufiyaaReceived;
